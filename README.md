@@ -20,7 +20,7 @@ This is an open-source Roblox script hub dedicated to enhancing your Slap Battle
 To use this script, copy and paste the following loadstring into your executor:
 
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Sxlent404/SlapBattlesScript/main/SlapBattles.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/sxlent404/sxlent404/main/slapbattles.lua"))()
 ```
 
 ### 🛠️ Usage
