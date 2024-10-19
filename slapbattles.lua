@@ -1,3 +1,5 @@
+-- Sxlent404's Slap Battles Script Hub
+
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 -- Slap Battles game IDs
@@ -11,8 +13,8 @@ local SlapBattlesGames = {
     [9015014224] = "No-one Shot Gloves",
     [11520107397] = "Killstreak Only",
     [14422118326] = "Null Zone",
-    [15228348051] = "Druid TDS", -- Same Place ID as Scythe TDS
-    [15228348051] = "Scythe TDS", -- Same Place ID as Druid TDS
+    [15228348051] = "Druid TDS",
+    [15228348051] = "Scythe TDS",
 }
 
 local currentGame = SlapBattlesGames[game.PlaceId]
