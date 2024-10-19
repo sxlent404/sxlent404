@@ -1,5 +1,3 @@
--- Sxlent404's Slap Battles Script Hub
-
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 -- Slap Battles game IDs
@@ -55,6 +53,45 @@ if currentGame then
         })
     -- Add more game-specific hacks for other modes
     end
+
+    local TeleportTab = Window:MakeTab({
+        Name = "Teleport",
+        Icon = "rbxassetid://4483345998",
+        PremiumOnly = false
+    })
+
+    -- Function to teleport to a place
+    local function TeleportToPlace(placeId)
+        local TeleportService = game:GetService("TeleportService")
+        local player = game.Players.LocalPlayer
+        
+        TeleportService:Teleport(placeId, player)
+    end
+
+    -- Add teleport buttons for each game mode
+    for placeId, gameName in pairs(SlapBattlesGames) do
+        if placeId ~= game.PlaceId then -- Don't add a button for the current game
+            TeleportTab:AddButton({
+                Name = "Teleport to " .. gameName,
+                Callback = function()
+                    TeleportToPlace(placeId)
+                end    
+            })
+        end
+    end
+
+    -- Add non-functional Null Zone button
+    TeleportTab:AddButton({
+        Name = "Teleport to Null Zone (Not Working)",
+        Callback = function()
+            OrionLib:MakeNotification({
+                Name = "Teleport Failed",
+                Content = "Teleport to Null Zone is currently not working.",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        end    
+    })
 
     local MiscTab = Window:MakeTab({
         Name = "Misc",
