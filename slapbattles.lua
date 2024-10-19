@@ -10,9 +10,9 @@ local SlapBattlesGames = {
     [9426795465] = "Slap Royale Match Making",
     [9015014224] = "No-one Shot Gloves",
     [11520107397] = "Killstreak Only",
-    -- [0] = "Null Zone", -- Placeholder, replace 0 with actual ID when available
-    -- [0] = "Scythe TDS", -- Placeholder, replace 0 with actual ID when available
-    -- [0] = "Other TDS", -- Placeholder, replace 0 with actual ID when available
+    [14422118326] = "Null Zone",
+    [15228348051] = "Druid TDS", -- Same Place ID as Scythe TDS
+    [15228348051] = "Scythe TDS", -- Same Place ID as Druid TDS
 }
 
 local currentGame = SlapBattlesGames[game.PlaceId]
