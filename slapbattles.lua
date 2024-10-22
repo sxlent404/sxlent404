@@ -16,8 +16,8 @@ local SlapBattlesGames = {
     [7234087065] = "Brazil",
     [0] = "Rob",
     [0] = "Frostbite",
-    [0] = "Bind",
-    [0] = "Admin",
+    [74169485398268] = "Bind",
+    [16034567693] = "Admin",
     
 }
 
