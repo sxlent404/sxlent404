@@ -29,7 +29,7 @@ if currentGame then
         Name = ("Sxlent404 - " .. currentGame .. " | " .. identifyexecutor()),
         IntroToggleIcon = "rbxassetid://7734091286",
         HidePremium = false,
-        SaveConfig = true,
+        SaveConfig = false, -- Changed to false by default
         ConfigFolder = "SlapBattlesConfig"
     })
 
@@ -142,6 +142,22 @@ if currentGame then
                 wait(1)
                 
                 -- Return to main game
+                -- Only queue the auto-execute script if it's enabled
+                if _G.AutoExecuter then
+                    local ScriptSpawnSlap = queueonteleport or queue_on_teleport
+                    if ScriptSpawnSlap then
+                        ScriptSpawnSlap([[
+                            if not game:IsLoaded() then
+                                game.Loaded:Wait()
+                            end
+                            repeat wait() until game.Players.LocalPlayer
+                            wait(0.25)
+                            _G.AutoExecuter = true
+                            loadstring(game:HttpGet("https://raw.githubusercontent.com/sxlent404/sxlent404/main/slapbattles.lua"))()
+                        ]])
+                    end
+                end
+                
                 game:GetService("TeleportService"):Teleport(6403373529, player)
             ]]
             
@@ -167,7 +183,7 @@ if currentGame then
 
     MiscTab:AddToggle({
         Name = "Save Config",
-        Default = true,
+        Default = false, -- Changed to false
         Save = true,
         Flag = "SaveConfig",
         Callback = function(Value)
