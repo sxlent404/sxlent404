@@ -14,11 +14,10 @@ local SlapBattlesGames = {
     [15228348051] = "Druid TDS",
     [15228348051] = "Scythe TDS",
     [7234087065] = "Brazil",
-    [0] = "Rob",
-    [0] = "Frostbite",
+    [13833961666] = "Rob",
+    [17290438723] = "Frostbite",
     [74169485398268] = "Bind",
     [16034567693] = "Admin",
-    
 }
 
 local currentGame = SlapBattlesGames[game.PlaceId]
@@ -40,7 +39,6 @@ if currentGame then
         PremiumOnly = false
     })
 
-    -- Add game-specific hacks here based on the current game mode
     if currentGame == "Slap Battles 👏" then
         MainHacksTab:AddButton({
             Name = "Slap Battles Hack",
@@ -57,7 +55,6 @@ if currentGame then
                 -- Add your hack code here
             end    
         })
-    -- Add more game-specific hacks for other modes
     end
 
     local TeleportTab = Window:MakeTab({
@@ -66,7 +63,6 @@ if currentGame then
         PremiumOnly = false
     })
 
-    -- Function to teleport to a place
     local function TeleportToPlace(placeId)
         local TeleportService = game:GetService("TeleportService")
         local player = game.Players.LocalPlayer
@@ -74,12 +70,10 @@ if currentGame then
         TeleportService:Teleport(placeId, player)
     end
 
-    -- Add teleport buttons for each game mode
     for placeId, gameName in pairs(SlapBattlesGames) do
-        if placeId ~= game.PlaceId then -- Don't add a button for the current game
+        if placeId ~= game.PlaceId then
             local buttonName = "Teleport to " .. gameName
             
-            -- Special cases for Null Zone and TDS
             if gameName == "Null Zone" then
                 buttonName = "Teleport to Null Zone (Not Working)"
             elseif gameName == "Druid TDS" or gameName == "Scythe TDS" then
@@ -113,44 +107,55 @@ if currentGame then
     BadgesTab:AddButton({
         Name = "Get Fan And Boxer",
         Callback = function()
-            TeleportToPlace(7234087065) -- Teleport to Brazil
+            -- Queue the badge collection script for Brazil
+            local brazilScript = [[
+                if not game:IsLoaded() then
+                    game.Loaded:Wait()
+                end
+                
+                local player = game.Players.LocalPlayer
+                repeat wait() until player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+                wait(1)
+                
+                -- Fan badge sequence
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(247.564193725586, -265.000030517578, -370.037526855469)
+                wait(0.5)
+                
+                local remoteEvents = game:GetService("ReplicatedStorage").RemoteEvents
+                local eventSequence = {"SuitUpClown", "KeyQuest", "KeyAcquired", "GOHOME", "KeyBadgeReward"}
+                
+                for _, eventName in ipairs(eventSequence) do
+                    remoteEvents[eventName]:FireServer()
+                    wait(0.1)
+                end
+                
+                wait(1)
+                
+                -- Boxer badge sequence
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(4231.26123046875, 3505.86376953125, 270.451995849609)
+                wait(0.5)
+                
+                if workspace:FindFirstChild("BoxingGloves") and workspace.BoxingGloves:FindFirstChild("ClickDetector") then
+                    fireclickdetector(workspace.BoxingGloves.ClickDetector)
+                end
+                
+                wait(1)
+                
+                -- Return to main game
+                game:GetService("TeleportService"):Teleport(6403373529, player)
+            ]]
             
-            -- Wait for the game to load
-            if not game:IsLoaded() then
-                game.Loaded:Wait()
+            if queueonteleport then
+                queueonteleport(brazilScript)
+                TeleportToPlace(7234087065) -- Teleport to Brazil
+            else
+                OrionLib:MakeNotification({
+                    Name = "Error",
+                    Content = "Your executor doesn't support queue on teleport!",
+                    Image = "rbxassetid://4483345998",
+                    Time = 5
+                })
             end
-            
-            wait(1)
-            
-            -- Teleport the player to a specific location
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(247.564193725586, -265.000030517578, -370.037526855469)
-            wait(0.5)
-            
-            -- Fire various remote events
-            local remoteEvents = game:GetService("ReplicatedStorage").RemoteEvents
-            remoteEvents.SuitUpClown:FireServer()
-            wait(0.1)
-            remoteEvents.KeyQuest:FireServer()
-            wait(0.1)
-            remoteEvents.KeyAcquired:FireServer()
-            wait(0.1)
-            remoteEvents.GOHOME:FireServer()
-            wait(0.1)
-            remoteEvents.KeyBadgeReward:FireServer()
-            
-            wait(1)
-            
-            -- Teleport the player again
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4231.26123046875, 3505.86376953125, 270.451995849609)
-            wait(0.5)
-            
-            -- Simulate a click on the BoxingGloves.ClickDetector
-            fireclickdetector(workspace.BoxingGloves.ClickDetector)
-            
-            wait(1)
-            
-            -- Teleport the player back to Slap Battles
-            TeleportToPlace(6403373529)
         end    
     })
 
@@ -160,7 +165,6 @@ if currentGame then
         PremiumOnly = false
     })
 
-    -- Config Save toggle
     MiscTab:AddToggle({
         Name = "Save Config",
         Default = true,
@@ -186,7 +190,6 @@ if currentGame then
         end    
     })
 
-    -- Silent Execute toggle
     MiscTab:AddToggle({
         Name = "Silent Execute",
         Default = false,
@@ -224,10 +227,8 @@ if currentGame then
         PremiumOnly = false
     })
 
-    -- Add Game Information paragraph
     OthersTab:AddParagraph("Game Information", "Game Mode: " .. currentGame .. "\nGame Place ID: " .. game.PlaceId)
 
-    -- Add button to copy Game Place ID
     OthersTab:AddButton({
         Name = "Copy Game ID to Clipboard",
         Callback = function()
@@ -257,7 +258,6 @@ if currentGame then
 
     OrionLib:Init()
 else
-    -- If not in a Slap Battles game, show an error notification
     game:GetService("StarterGui"):SetCore("SendNotification", {
         Title = "Error",
         Text = "This script only works in Slap Battles games.",
